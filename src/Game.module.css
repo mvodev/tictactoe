@@ -3,18 +3,23 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .gameroot {
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 80px);
-  gap: 10px;
-  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(3, 90px);
+  gap: 10px 10px;
+  grid-template-rows: repeat(3, 90px);
 }
 
 .field {
-  height: 80px;
-  width: 80px;
   border: 3px solid white;
+}
+
+.header {
+  font-size: 3.2em;
+  line-height: 1.1;
+  text-align: center;
 }
