@@ -1,12 +1,16 @@
 
 import type { PointerEvent } from 'react';
 import styles from './Game.module.css';
+import { useTicTacToe } from './hooks/useTicTacToe';
 
 const Game = () => {
-  const handleClick = (event:PointerEvent<HTMLElement>)=>{
+  const field = useTicTacToe();
+  console.log(field);
+  const handleClick = (event:PointerEvent<HTMLDivElement>)=>{
     const eventTarget = event.target as HTMLDivElement 
     console.log(eventTarget.id);
   }
+  
   return (
     <>
       <h1 className={styles.header}>TicTacToe Game</h1>
