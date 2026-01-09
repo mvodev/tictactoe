@@ -15,6 +15,7 @@ const getEmptyBoard = ():BoardShape => {
     .map(() => Array(3).fill(emptyCell));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const randomBot = (field:BoardShape) => {
   let row:number;
   let column:number;
@@ -27,9 +28,39 @@ const randomBot = (field:BoardShape) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const checkIsWin = (field:BoardShape) => {
+  //check by rows
+  for(let row=0; row<3; row++){
+    let match = 1;
+    const valueToCheck = field[row][0];
+    for(let column=1;column<3;column++){
+      if(field[row][column]===valueToCheck){
+        match++;
+      } else match=0;
+      if(match ===3) return valueToCheck;
+    }
+  }
+  //check by columns
+  for(let column=0; column<3; column++){
+    let match = 1;
+    const valueToCheck = field[0][column];
+    for(let row=1;row<3;row++){
+      if(field[row][column]===valueToCheck){
+        match++;
+      } else match=0;
+      if(match ===3) return valueToCheck;
+    }
+  }
+  //check diagonals
+  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]) return field[0][0];
+  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]) return field [2][0];
+}
+
 export const useTicTacToe = () => {
-  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field,setField] = useState<BoardShape>(getEmptyBoard());
-  console.log(randomBot(field))
-  return {field};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [winner,setWinner] = useState<MarkedCell|null>(null);
+  return {field,winner};
 }
