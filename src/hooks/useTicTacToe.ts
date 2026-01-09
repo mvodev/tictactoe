@@ -1,21 +1,35 @@
 import { useState } from "react";
 
-export type EmptyCell  = 'Empty';
+type EmptyCell  = 'Empty';
 
-export type MarkedCell ='Circle'|'Cross';
+type MarkedCell = 'Circle'|'Cross';
 
-export type CellState = MarkedCell | EmptyCell;
+type CellState = MarkedCell | EmptyCell;
 
-export type BoardShape = CellState[][];
+type BoardShape = CellState[][];
 
-export const getEmptyBoard = ():BoardShape => {
+const getEmptyBoard = ():BoardShape => {
   const emptyCell:EmptyCell = 'Empty';
   return Array(3)
     .fill(null)
     .map(() => Array(3).fill(emptyCell));
 }
 
+const randomBot = (field:BoardShape) => {
+  let row:number;
+  let column:number;
+  while(true){
+    row = Math.floor(Math.random()*3);
+    column = Math.floor(Math.random()*3);
+    if(field[row][column] === 'Empty') {
+      return {row,column}
+    }
+  }
+}
+
 export const useTicTacToe = () => {
+  
   const [field,setField] = useState<BoardShape>(getEmptyBoard());
-  return {field,setField};
+  console.log(randomBot(field))
+  return {field};
 }
