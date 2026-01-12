@@ -6,7 +6,7 @@ type MarkedCell = 'Circle'|'Cross';
 
 type CellState = MarkedCell | EmptyCell;
 
-type BoardShape = CellState[][];
+export type BoardShape = CellState[][];
 
 const getEmptyBoard = ():BoardShape => {
   const emptyCell:EmptyCell = 'Empty';
@@ -61,17 +61,17 @@ export const useTicTacToe = (
   column:number|null,
   whichTurn:MarkedCell|null) => {
     
-  const [field,setField] = useState<BoardShape>(getEmptyBoard());
+  const [board,setBoard] = useState<BoardShape>(getEmptyBoard());
   const [winner,setWinner] = useState<MarkedCell|null>(null);
   const [nextMotion,setNextMotion] = 
     useState<{row:number|null,column:number|null}>({row:null,column:null})
   if(row&&column&&whichTurn) {
-    const newStateField = [...field];
-    newStateField[row][column] = whichTurn;
-    setField(newStateField);
-    setWinner(checkIsWin(field))
-    setNextMotion(randomBot(field));
+    const newStateBoard = [...board];
+    newStateBoard[row][column] = whichTurn;
+    setBoard(newStateBoard);
+    setWinner(checkIsWin(board))
+    setNextMotion(randomBot(board));
     ;
   }
-  return {field,winner,nextMotion};
+  return {board, winner, nextMotion};
 }

@@ -1,11 +1,13 @@
 
 import { type PointerEvent } from 'react';
 import styles from './Board.module.css';
-import { useTicTacToe } from '../hooks/useTicTacToe';
+import { type BoardShape } from '../hooks/useTicTacToe';
+interface Props {
+  currentBoard:BoardShape
+}
 
-const Board = () => {
-  const {field} = useTicTacToe(null,null,null);
-  console.log(field);
+const Board = ({ currentBoard }: Props) => {
+  
   const handleClick = (event:PointerEvent<HTMLDivElement>)=>{
     const eventTarget = event.target as HTMLDivElement 
     console.log(eventTarget.dataset);
@@ -14,7 +16,7 @@ const Board = () => {
   return (
     <>
       <main onPointerDown={handleClick} className={styles.gameroot}>
-        {field.map((row,rowIndex) => {
+        {currentBoard.map((row,rowIndex) => {
           return row.map((_,columnIndex) => 
             <div 
               data-row={rowIndex} 
