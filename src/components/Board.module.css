@@ -1,0 +1,12 @@
+.field {
+  border: 3px solid white;
+  cursor: pointer;
+}
+
+.gameroot {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 90px);
+  gap: 10px 10px;
+  grid-template-rows: repeat(3, 90px);
+}
