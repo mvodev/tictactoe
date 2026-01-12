@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type EmptyCell  = 'Empty';
 
@@ -66,19 +66,40 @@ export const useTicTacToe = (
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
   const [nextMotion,setNextMotion] = 
-    useState<{row:number|null,column:number|null}>({row:null,column:null})
-  // if(row&&column&&whichTurn) {
-  //   const newStateBoard = [...board];
-  //   newStateBoard[row][column] = whichTurn;
-  //   setBoard(newStateBoard);
-  //   setWinner(checkIsWin(board))
-  //   setNextMotion(randomBot(board));
-  //   ;
-  // }
-  const startGame = useCallback(() => {
+    useState<{row:number|null,column:number|null}>({row:null,column:null  const startGame = useCallback(() => {
     setIsPlaying(true);
     setBoard(getEmptyBoard());
   },[setIsPlaying,setBoard]);
 
-  return {board, winner, nextMotion , startGame ,isPlaying};
+  const onHandleClick = useCallback((event:PointerEvent):void => {
+    const target = event.target as HTMLElement;
+    if(isPlaying && target.dataset.id==='tictactoe'){
+      const { row, column } = target.dataset;
+      const newBoardState = structuredClone(board);
+      if(row && column && newBoardState) {
+        newBoardState[Number(row)][Number(column)] = 'Circle';
+        const {row:enemyRow,column:enemyColumn} = randomBot(newBoardState);
+        newBoardState[Number(enemyRow)][Number(enemyColumn)] = 'Cross';
+        setBoard(newBoardState);
+      }
+    }
+  },[board,isPlaying])
+
+  useEffect(() => {
+    if (!isPlaying) {
+      return;
+    }
+    document.addEventListener('pointerdown', onHandleClick);
+    return () => {
+      document.removeEventListener('pointerdown', onHandleClick);
+    };
+  }, [isPlaying,onHandleClick]);
+
+  return { 
+    board, 
+    winner, 
+    nextMotion, 
+    startGame,
+    isPlaying,
+  };
 }

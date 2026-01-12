@@ -1,28 +1,29 @@
 
-import { type PointerEvent } from 'react';
 import styles from './Board.module.css';
 import { type BoardShape } from '../hooks/useTicTacToe';
+
 interface Props {
-  currentBoard:BoardShape|null
+  currentBoard:BoardShape|null;
 }
 
 const Board = ({ currentBoard }: Props) => {
   
-  const handleClick = (event:PointerEvent<HTMLDivElement>)=>{
-    const eventTarget = event.target as HTMLDivElement 
-    console.log(eventTarget.dataset);
-  }
-  
   return (
     <>
-      <main onPointerDown={handleClick} className={styles.gameroot}>
+      <main className={styles.gameroot}>
         {currentBoard?.map((row,rowIndex) => {
-          return row.map((_,columnIndex) => 
+          return row.map((value,columnIndex) => 
             <div 
+              
+              data-id="tictactoe"
               key={columnIndex+rowIndex}
               data-row={rowIndex} 
               data-column={columnIndex} 
-              className={styles.field}>
+              className={
+                `${styles.field} 
+                  ${value==='Circle'
+                    ? styles.circle : value==='Cross'
+                    ? styles.cross : ''}`}>
             </div>)
         })}
       </main>

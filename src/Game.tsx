@@ -7,9 +7,8 @@ const Game = () => {
   return (
     <>
       <h1 className={styles.header}>TicTacToe Game</h1>
-      
       {isPlaying ? (
-         <Board currentBoard={board}/>
+        <Board currentBoard={board}/>
         ) : (
           <button className={styles.buttonStart} onPointerDown={startGame}>Начать игру</button>
         )}
