@@ -3,7 +3,7 @@ import { type PointerEvent } from 'react';
 import styles from './Board.module.css';
 import { type BoardShape } from '../hooks/useTicTacToe';
 interface Props {
-  currentBoard:BoardShape
+  currentBoard:BoardShape|null
 }
 
 const Board = ({ currentBoard }: Props) => {
@@ -16,9 +16,10 @@ const Board = ({ currentBoard }: Props) => {
   return (
     <>
       <main onPointerDown={handleClick} className={styles.gameroot}>
-        {currentBoard.map((row,rowIndex) => {
+        {currentBoard?.map((row,rowIndex) => {
           return row.map((_,columnIndex) => 
             <div 
+              key={columnIndex+rowIndex}
               data-row={rowIndex} 
               data-column={columnIndex} 
               className={styles.field}>

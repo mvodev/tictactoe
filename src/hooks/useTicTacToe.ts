@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useCallback, useState } from "react";
 
 type EmptyCell  = 'Empty';
 
@@ -61,17 +62,23 @@ export const useTicTacToe = (
   column:number|null,
   whichTurn:MarkedCell|null) => {
     
-  const [board,setBoard] = useState<BoardShape>(getEmptyBoard());
+  const [board,setBoard] = useState<BoardShape|null>(null);
+  const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
   const [nextMotion,setNextMotion] = 
     useState<{row:number|null,column:number|null}>({row:null,column:null})
-  if(row&&column&&whichTurn) {
-    const newStateBoard = [...board];
-    newStateBoard[row][column] = whichTurn;
-    setBoard(newStateBoard);
-    setWinner(checkIsWin(board))
-    setNextMotion(randomBot(board));
-    ;
-  }
-  return {board, winner, nextMotion};
+  // if(row&&column&&whichTurn) {
+  //   const newStateBoard = [...board];
+  //   newStateBoard[row][column] = whichTurn;
+  //   setBoard(newStateBoard);
+  //   setWinner(checkIsWin(board))
+  //   setNextMotion(randomBot(board));
+  //   ;
+  // }
+  const startGame = useCallback(() => {
+    setIsPlaying(true);
+    setBoard(getEmptyBoard());
+  },[setIsPlaying,setBoard]);
+
+  return {board, winner, nextMotion , startGame ,isPlaying};
 }
