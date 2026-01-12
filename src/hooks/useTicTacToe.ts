@@ -15,7 +15,6 @@ const getEmptyBoard = ():BoardShape => {
     .map(() => Array(3).fill(emptyCell));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const randomBot = (field:BoardShape) => {
   let row:number;
   let column:number;
@@ -28,8 +27,7 @@ const randomBot = (field:BoardShape) => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkIsWin = (field:BoardShape) => {
+const checkIsWin = (field:BoardShape):MarkedCell|null => {
   //check by rows
   for(let row=0; row<3; row++){
     let match = 1;
@@ -38,7 +36,7 @@ const checkIsWin = (field:BoardShape) => {
       if(field[row][column]===valueToCheck){
         match++;
       } else match=0;
-      if(match ===3) return valueToCheck;
+      if(match ===3 && valueToCheck!=='Empty') return valueToCheck;
     }
   }
   //check by columns
@@ -49,18 +47,31 @@ const checkIsWin = (field:BoardShape) => {
       if(field[row][column]===valueToCheck){
         match++;
       } else match=0;
-      if(match ===3) return valueToCheck;
+      if(match ===3 && valueToCheck!=='Empty') return valueToCheck;
     }
   }
   //check diagonals
-  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]) return field[0][0];
-  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]) return field [2][0];
+  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]&&field[0][0]!=='Empty') return field[0][0];
+  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]&&field[2][0]!=='Empty') return field [2][0];
+  return null;
 }
 
-export const useTicTacToe = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const useTicTacToe = (
+  row:number|null,
+  column:number|null,
+  whichTurn:MarkedCell|null) => {
+    
   const [field,setField] = useState<BoardShape>(getEmptyBoard());
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [winner,setWinner] = useState<MarkedCell|null>(null);
-  return {field,winner};
+  const [nextMotion,setNextMotion] = 
+    useState<{row:number|null,column:number|null}>({row:null,column:null})
+  if(row&&column&&whichTurn) {
+    const newStateField = [...field];
+    newStateField[row][column] = whichTurn;
+    setField(newStateField);
+    setWinner(checkIsWin(field))
+    setNextMotion(randomBot(field));
+    ;
+  }
+  return {field,winner,nextMotion};
 }

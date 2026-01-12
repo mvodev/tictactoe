@@ -1,10 +1,10 @@
 
-import type { PointerEvent } from 'react';
+import { type PointerEvent } from 'react';
 import styles from './Board.module.css';
 import { useTicTacToe } from '../hooks/useTicTacToe';
 
 const Board = () => {
-  const {field} = useTicTacToe();
+  const {field} = useTicTacToe(null,null,null);
   console.log(field);
   const handleClick = (event:PointerEvent<HTMLDivElement>)=>{
     const eventTarget = event.target as HTMLDivElement 
