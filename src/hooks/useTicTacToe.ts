@@ -16,16 +16,30 @@ const getEmptyBoard = ():BoardShape => {
     .map(() => Array(3).fill(emptyCell));
 }
 
-const randomBot = (field:BoardShape) => {
-  let row:number;
-  let column:number;
-  while(true){
-    row = Math.floor(Math.random()*3);
-    column = Math.floor(Math.random()*3);
-    if(field[row][column] === 'Empty') {
-      return {row,column}
+const shuffleArray = <T>(array: T[]): T[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+        // Генерируем случайный индекс j от 0 до i (включительно)
+        const j = Math.floor(Math.random() * (i + 1));
+        // Меняем местами array[i] и array[j]
+        [array[i], array[j]] = [array[j], array[i]];
     }
-  }
+    return array;
+}
+
+// const possibleMoves = ()=>{
+//   return Array(9)
+//     .fill(null)
+//     .map((_,index) => {return {row:index,column:index}});
+// }
+
+const possibleMoves = shuffleArray(Array(9).fill(null)
+  .map((_,index) => {return {row:index,column:index}}))
+
+const enemyMove = (itemToRemove : {row:number,column:number})=>{
+  const indexToRemove = possibleMoves.findIndex((value)=>
+    value.row===itemToRemove.row && value.column===itemToRemove.column);
+  if(indexToRemove>=1) possibleMoves.splice(indexToRemove, 1);
+  return possibleMoves.pop();
 }
 
 const checkIsWin = (field:BoardShape):MarkedCell|null => {
@@ -62,7 +76,7 @@ export const useTicTacToe = () => {
   const [board,setBoard] = useState<BoardShape|null>(null);
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
-
+console.log(possibleMoves)
   const startGame = useCallback(() => {
     setIsPlaying(true);
     setBoard(getEmptyBoard());
@@ -75,8 +89,8 @@ export const useTicTacToe = () => {
       const newBoardState = structuredClone(board);
       if(row && column && newBoardState) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
-        const {row:enemyRow,column:enemyColumn} = randomBot(newBoardState);
-        newBoardState[Number(enemyRow)][Number(enemyColumn)] = 'Cross';
+        const move = enemyMove({row:Number(row),column:Number(column)});
+        if(move) newBoardState[move.row][move.column] = 'Cross';
         setBoard(newBoardState);
       }
     }
