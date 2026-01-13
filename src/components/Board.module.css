@@ -9,16 +9,33 @@
   grid-template-columns: repeat(3, 90px);
   gap: 10px 10px;
   grid-template-rows: repeat(3, 90px);
+  max-width: 290px;
 }
 
 .circle {
+  width: 90px;
+  height: 90px;
+  max-width: 90px;
+  min-width: 0;
+  position: relative;
+}
+
+.circle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, white 0%, white 50%, #f0f0f0 50%);
+  border-radius: 50%;
+  border: 3px solid white;
 }
 
 .cross {
   position: relative;
+  width: 90px;
+  height: 90px;
 }
 
 .cross::before,

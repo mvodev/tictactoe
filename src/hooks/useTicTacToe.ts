@@ -57,16 +57,13 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
   return null;
 }
 
-export const useTicTacToe = (
-  row:number|null,
-  column:number|null,
-  whichTurn:MarkedCell|null) => {
+export const useTicTacToe = () => {
     
   const [board,setBoard] = useState<BoardShape|null>(null);
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
-  const [nextMotion,setNextMotion] = 
-    useState<{row:number|null,column:number|null}>({row:null,column:null  const startGame = useCallback(() => {
+
+  const startGame = useCallback(() => {
     setIsPlaying(true);
     setBoard(getEmptyBoard());
   },[setIsPlaying,setBoard]);
@@ -98,7 +95,6 @@ export const useTicTacToe = (
   return { 
     board, 
     winner, 
-    nextMotion, 
     startGame,
     isPlaying,
   };
