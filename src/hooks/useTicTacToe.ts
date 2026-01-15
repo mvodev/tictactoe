@@ -35,7 +35,7 @@ const possibleMoves = ()=>{
       result[rowIndex][columnIndex] = {row:rowIndex,column:columnIndex}
     } 
   }
-  return result.flat();
+  return shuffleArray(result.flat());
 }
 
 const moves = possibleMoves();
