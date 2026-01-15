@@ -26,14 +26,17 @@ const shuffleArray = <T>(array: T[]): T[] => {
     return array;
 }
 
-// const possibleMoves = ()=>{
-//   return Array(9)
-//     .fill(null)
-//     .map((_,index) => {return {row:index,column:index}});
-// }
-
-const possibleMoves = shuffleArray(Array(9).fill(null)
-  .map((_,index) => {return {row:index,column:index}}))
+const possibleMoves = ()=>{
+  const result = Array(3)
+    .fill(null)
+    .map(() => Array(3).fill({row:null,column:null}));
+  for(let rowIndex=0;rowIndex<result.length;rowIndex++){
+    for(let columnIndex=0;columnIndex<result.length;columnIndex++){
+      result[rowIndex][columnIndex] = {row:rowIndex,column:columnIndex}
+    } 
+  }
+  return result;
+}
 
 const enemyMove = (itemToRemove : {row:number,column:number})=>{
   const indexToRemove = possibleMoves.findIndex((value)=>
@@ -72,11 +75,10 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
 }
 
 export const useTicTacToe = () => {
-    
+
   const [board,setBoard] = useState<BoardShape|null>(null);
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
-console.log(possibleMoves)
   const startGame = useCallback(() => {
     setIsPlaying(true);
     setBoard(getEmptyBoard());
