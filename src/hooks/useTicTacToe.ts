@@ -35,14 +35,16 @@ const possibleMoves = ()=>{
       result[rowIndex][columnIndex] = {row:rowIndex,column:columnIndex}
     } 
   }
-  return result;
+  return result.flat();
 }
 
+const moves = possibleMoves();
+
 const enemyMove = (itemToRemove : {row:number,column:number})=>{
-  const indexToRemove = possibleMoves.findIndex((value)=>
+  const indexToRemove = moves.findIndex((value)=>
     value.row===itemToRemove.row && value.column===itemToRemove.column);
-  if(indexToRemove>=1) possibleMoves.splice(indexToRemove, 1);
-  return possibleMoves.pop();
+  if(indexToRemove>=1) moves.splice(indexToRemove, 1);
+  return moves.pop();
 }
 
 const checkIsWin = (field:BoardShape):MarkedCell|null => {
@@ -75,7 +77,6 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
 }
 
 export const useTicTacToe = () => {
-
   const [board,setBoard] = useState<BoardShape|null>(null);
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
