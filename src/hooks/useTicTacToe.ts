@@ -47,6 +47,11 @@ const enemyMove = (itemToRemove : {row:number,column:number})=>{
   return moves.pop();
 }
 
+const isEmptyField = (row:number,column:number,field:BoardShape) => {
+  if(field[row][column] ==='Empty') return true;
+  return false;
+}
+
 const checkIsWin = (field:BoardShape):MarkedCell|null => {
   //check by rows
   for(let row=0; row<3; row++){
@@ -77,20 +82,20 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
 }
 
 export const useTicTacToe = () => {
-  const [board,setBoard] = useState<BoardShape|null>(null);
+  const [board,setBoard] = useState<BoardShape>(getEmptyBoard());
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
   const startGame = useCallback(() => {
     setIsPlaying(true);
-    setBoard(getEmptyBoard());
-  },[setIsPlaying,setBoard]);
+  },[setIsPlaying]);
 
   const onHandleClick = useCallback((event:PointerEvent):void => {
     const target = event.target as HTMLElement;
     if(isPlaying && target.dataset.id==='tictactoe'){
       const { row, column } = target.dataset;
       const newBoardState = structuredClone(board);
-      if(row && column && newBoardState) {
+      if(row && column && 
+          isEmptyField(Number(row),Number(column),newBoardState)) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
         const move = enemyMove({row:Number(row),column:Number(column)});
         if(move) newBoardState[move.row][move.column] = 'Cross';
