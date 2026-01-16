@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
 
 type EmptyCell  = 'Empty';
@@ -94,15 +93,19 @@ export const useTicTacToe = () => {
     if(isPlaying && target.dataset.id==='tictactoe'){
       const { row, column } = target.dataset;
       const newBoardState = structuredClone(board);
-      if(row && column && 
+      if(row && column && !winner &&
           isEmptyField(Number(row),Number(column),newBoardState)) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
-        const move = enemyMove({row:Number(row),column:Number(column)});
-        if(move) newBoardState[move.row][move.column] = 'Cross';
         setBoard(newBoardState);
+        if(checkIsWin(newBoardState)) setWinner(checkIsWin(newBoardState))
+          if(!winner) {
+            const move = enemyMove({row:Number(row),column:Number(column)});
+            if(move) newBoardState[move.row][move.column] = 'Cross';
+            setBoard(newBoardState);
+          }
       }
     }
-  },[board,isPlaying])
+  },[board,isPlaying,winner])
 
   useEffect(() => {
     if (!isPlaying) {
