@@ -41,9 +41,11 @@ const possibleMoves = ()=>{
 const moves = possibleMoves();
 
 const enemyMove = (itemToRemove : {row:number,column:number})=>{
+  console.log('item to remove')
+  console.log(itemToRemove);
   const indexToRemove = moves.findIndex((value)=>
     value.row===itemToRemove.row && value.column===itemToRemove.column);
-  if(indexToRemove>=1) moves.splice(indexToRemove, 1);
+  if(indexToRemove>=-1) moves.splice(indexToRemove, 1);
   return moves.pop();
 }
 
@@ -93,7 +95,10 @@ export const useTicTacToe = () => {
       if(row && column && newBoardState) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
         const move = enemyMove({row:Number(row),column:Number(column)});
+        console.log('enemy move');
+        console.log(move);
         if(move) newBoardState[move.row][move.column] = 'Cross';
+        console.log(moves)
         setBoard(newBoardState);
       }
     }
