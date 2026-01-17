@@ -11,10 +11,13 @@ const Game = () => {
         <>
         <Board currentBoard={board}/>
         {winner
-          ?<h5>{winner==='Circle'?'Вы победили':'Вы проиграли'}</h5>
+          ?<h5 className={styles.winnerHeader}>{winner==='Circle'?'Вы победили':'Вы проиграли'}</h5>
           :null
         }
-        <button className={styles.buttonControl} onPointerDown={stopGame}>Стоп игра</button>
+        {winner && <button className={styles.buttonControl} onPointerDown={startGame}>Сыграть еще</button>}
+        {
+          !winner && <button className={styles.buttonControl} onPointerDown={stopGame}>Стоп игра</button>
+        }
         </>
         ) : (
           <button className={styles.buttonControl} onPointerDown={startGame}>Начать игру</button>

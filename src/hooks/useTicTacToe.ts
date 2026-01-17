@@ -37,9 +37,7 @@ const possibleMoves = ()=>{
   return shuffleArray(result.flat());
 }
 
-const moves = possibleMoves();
-
-const enemyMove = (itemToRemove : {row:number,column:number})=>{
+const enemyMove = (moves:{row:number,column:number}[],itemToRemove : {row:number,column:number})=>{
   const indexToRemove = moves.findIndex((value)=>
     value.row===itemToRemove.row && value.column===itemToRemove.column);
   if(indexToRemove>=-1) moves.splice(indexToRemove, 1);
@@ -90,14 +88,20 @@ export const useTicTacToe = () => {
   const [board,setBoard] = useState<BoardShape>(getEmptyBoard());
   const [isPlaying,setIsPlaying] = useState(false);
   const [winner,setWinner] = useState<MarkedCell|null>(null);
+  const [enemyMoves,setEnemyMoves] = useState(possibleMoves());
+
   const startGame = useCallback(() => {
     setIsPlaying(true);
-  },[setIsPlaying]);
+    setEnemyMoves(possibleMoves())
+    setBoard(getEmptyBoard());
+    setWinner(null);
+  },[setIsPlaying,setWinner,setBoard,setEnemyMoves]);
 
   const stopGame = useCallback(() => {
     setIsPlaying(false);
     setBoard(getEmptyBoard());
-  },[setBoard,setIsPlaying]);
+    setWinner(null);
+  },[setBoard,setIsPlaying,setWinner]);
 
   const onHandleClick = useCallback((event:PointerEvent):void => {
     const target = event.target as HTMLElement;
@@ -112,13 +116,13 @@ export const useTicTacToe = () => {
           setWinner(checkIsWin(newBoardState)!.whoWin)
         }
           if(!winner) {
-            const move = enemyMove({row:Number(row),column:Number(column)});
+            const move = enemyMove(enemyMoves,{row:Number(row),column:Number(column)});
             if(move) newBoardState[move.row][move.column] = 'Cross';
             setBoard(newBoardState);
           }
       }
     }
-  },[board,isPlaying,winner])
+  },[board,isPlaying,winner,enemyMoves])
 
   useEffect(() => {
     if (!isPlaying) {
