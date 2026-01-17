@@ -81,8 +81,8 @@ const checkIsWin = (field:BoardShape):WhoWin|null => {
     }
   }
   //check diagonals
-  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]&&field[0][0]!=='Empty') return {whoWin:field[0][0],parameter:'diagonal',parameterValue:2};
-  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]&&field[2][0]!=='Empty') return {whoWin:field[2][0],parameter:'diagonal',parameterValue:0};
+  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]&&field[0][0]!=='Empty') return {whoWin:field[0][0] as MarkedCell,parameter:'diagonal',parameterValue:2};
+  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]&&field[2][0]!=='Empty') return {whoWin:field[2][0] as MarkedCell,parameter:'diagonal',parameterValue:0};
   return null;
 }
 
@@ -108,7 +108,9 @@ export const useTicTacToe = () => {
           isEmptyField(Number(row),Number(column),newBoardState)) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
         setBoard(newBoardState);
-        if(checkIsWin(newBoardState)) setWinner(checkIsWin(newBoardState))
+        if(checkIsWin(newBoardState)) {
+          setWinner(checkIsWin(newBoardState)!.whoWin)
+        }
           if(!winner) {
             const move = enemyMove({row:Number(row),column:Number(column)});
             if(move) newBoardState[move.row][move.column] = 'Cross';
