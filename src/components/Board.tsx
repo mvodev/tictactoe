@@ -14,7 +14,6 @@ const Board = ({ currentBoard }: Props) => {
         {currentBoard?.map((row,rowIndex) => {
           return row.map((value,columnIndex) => 
             <div 
-              
               data-id="tictactoe"
               key={columnIndex+rowIndex}
               data-row={rowIndex} 

@@ -88,6 +88,11 @@ export const useTicTacToe = () => {
     setIsPlaying(true);
   },[setIsPlaying]);
 
+  const stopGame = useCallback(() => {
+    setIsPlaying(false);
+    setBoard(getEmptyBoard());
+  },[setBoard,setIsPlaying]);
+
   const onHandleClick = useCallback((event:PointerEvent):void => {
     const target = event.target as HTMLElement;
     if(isPlaying && target.dataset.id==='tictactoe'){
@@ -121,6 +126,7 @@ export const useTicTacToe = () => {
     board, 
     winner, 
     startGame,
+    stopGame,
     isPlaying,
   };
 }
