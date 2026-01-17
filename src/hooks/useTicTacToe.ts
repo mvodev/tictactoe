@@ -51,7 +51,13 @@ const isEmptyField = (row:number,column:number,field:BoardShape) => {
   return false;
 }
 
-const checkIsWin = (field:BoardShape):MarkedCell|null => {
+type WhoWin = {
+  whoWin:MarkedCell;
+  parameter:'row'|'column'|'diagonal';
+  parameterValue:number;
+}
+
+const checkIsWin = (field:BoardShape):WhoWin|null => {
   //check by rows
   for(let row=0; row<3; row++){
     let match = 1;
@@ -60,7 +66,7 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
       if(field[row][column]===valueToCheck){
         match++;
       } else match=0;
-      if(match ===3 && valueToCheck!=='Empty') return valueToCheck;
+      if(match ===3 && valueToCheck!=='Empty') return {whoWin:valueToCheck,parameter:'row',parameterValue:row};
     }
   }
   //check by columns
@@ -71,12 +77,12 @@ const checkIsWin = (field:BoardShape):MarkedCell|null => {
       if(field[row][column]===valueToCheck){
         match++;
       } else match=0;
-      if(match ===3 && valueToCheck!=='Empty') return valueToCheck;
+      if(match ===3 && valueToCheck!=='Empty') return {whoWin:valueToCheck,parameter:'column',parameterValue:column};
     }
   }
   //check diagonals
-  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]&&field[0][0]!=='Empty') return field[0][0];
-  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]&&field[2][0]!=='Empty') return field [2][0];
+  if(field[0][0]===field[1][1]&&field[1][1]===field[2][2]&&field[0][0]!=='Empty') return {whoWin:field[0][0],parameter:'diagonal',parameterValue:2};
+  if(field[2][0]===field[1][1]&&field[1][1]===field[0][2]&&field[2][0]!=='Empty') return {whoWin:field[2][0],parameter:'diagonal',parameterValue:0};
   return null;
 }
 
