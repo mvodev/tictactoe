@@ -20,9 +20,11 @@ const Board = ({ currentBoard }: Props) => {
               data-column={columnIndex} 
               className={
                 `${styles.field} 
-                  ${value==='Circle'
-                    ? styles.circle : value==='Cross'
-                    ? styles.cross : ''}`}>
+                  ${value==='Circle' ? styles.circle : 
+                    value==='Cross' ? styles.cross :
+                    value==='CircleWin' ? styles.circleWin :
+                    value==='CrossWin' ? styles.crossWin : ''}
+                `}>
             </div>)
         })}
       </main>

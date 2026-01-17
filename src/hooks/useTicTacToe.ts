@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 type EmptyCell  = 'Empty';
 
-type MarkedCell = 'Circle'|'Cross';
+type MarkedCell = 'Circle'|'Cross'|'CircleWin'|'CrossWin';
 
 type CellState = MarkedCell | EmptyCell;
 
@@ -17,15 +17,13 @@ const getEmptyBoard = ():BoardShape => {
 
 const shuffleArray = <T>(array: T[]): T[] => {
     for (let i = array.length - 1; i > 0; i--) {
-        // Генерируем случайный индекс j от 0 до i (включительно)
         const j = Math.floor(Math.random() * (i + 1));
-        // Меняем местами array[i] и array[j]
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
 }
 
-const possibleMoves = ()=>{
+const possibleMoves = () => {
   const result = Array(3)
     .fill(null)
     .map(() => Array(3).fill({row:null,column:null}));
