@@ -53,6 +53,10 @@ type WhoWin = {
   parameterValue:number;
 }
 
+const markWinnerCells = (field:BoardShape,whoWin:WhoWin) => {
+
+}
+
 const checkIsWin = (field:BoardShape):WhoWin|null => {
   //check by rows
   for(let row=0; row<3; row++){
@@ -62,7 +66,7 @@ const checkIsWin = (field:BoardShape):WhoWin|null => {
       if(field[row][column]===valueToCheck){
         match++;
       } else match=0;
-      if(match ===3 && valueToCheck!=='Empty') return {whoWin:valueToCheck,parameter:'row',parameterValue:row};
+      if(match ===3 && valueToCheck!=='Empty') {return {whoWin:valueToCheck,parameter:'row',parameterValue:row}};
     }
   }
   //check by columns
@@ -113,11 +117,14 @@ export const useTicTacToe = () => {
         if(checkIsWin(newBoardState)) {
           setWinner(checkIsWin(newBoardState)!.whoWin)
         }
-          if(!winner) {
-            const move = enemyMove(enemyMoves,{row:Number(row),column:Number(column)});
-            if(move) newBoardState[move.row][move.column] = 'Cross';
+        if(!winner) {
+          const move = enemyMove(enemyMoves,{row:Number(row),column:Number(column)});
+          if(move) newBoardState[move.row][move.column] = 'Cross';
             setBoard(newBoardState);
-          }
+        }
+        if(checkIsWin(newBoardState)) {
+          setWinner(checkIsWin(newBoardState)!.whoWin)
+        }
       }
     }
   },[board,isPlaying,winner,enemyMoves])

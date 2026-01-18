@@ -4,6 +4,7 @@ import { useTicTacToe } from './hooks/useTicTacToe';
 
 const Game = () => {
   const {board, startGame, isPlaying, stopGame,winner} = useTicTacToe();
+  console.log(winner)
   return (
     <>
       <h1 className={styles.header}>TicTacToe Game</h1>
