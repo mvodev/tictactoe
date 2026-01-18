@@ -54,7 +54,28 @@ type WhoWin = {
 }
 
 const markWinnerCells = (field:BoardShape,whoWin:WhoWin) => {
-
+  switch (whoWin.parameter) {
+    case 'column':
+      for(let row=0;row<field.length;row++){
+        field[row][whoWin.parameterValue] = 
+        whoWin.whoWin==='Circle'||whoWin.whoWin==='CircleWin'
+        ?'CircleWin'
+        :'CrossWin';
+      }
+      break;
+    case 'diagonal':
+        // Statements to execute if expression === value2
+      break;
+    case 'row':
+      for(let column=0;column<field.length;column++){
+        field[whoWin.parameterValue][column] = 
+          whoWin.whoWin === 'Circle'||
+          whoWin.whoWin === 'CircleWin' 
+          ? 'CircleWin' 
+          : 'CrossWin';
+      }
+      break;
+  }
 }
 
 const checkIsWin = (field:BoardShape):WhoWin|null => {
@@ -113,17 +134,21 @@ export const useTicTacToe = () => {
       if(row && column && !winner &&
           isEmptyField(Number(row),Number(column),newBoardState)) {
         newBoardState[Number(row)][Number(column)] = 'Circle';
-        setBoard(newBoardState);
-        if(checkIsWin(newBoardState)) {
-          setWinner(checkIsWin(newBoardState)!.whoWin)
+        const whoWinAfterGamerMove = checkIsWin(newBoardState);
+        if(whoWinAfterGamerMove) {
+          setWinner(checkIsWin(newBoardState)!.whoWin);
+          markWinnerCells(newBoardState,whoWinAfterGamerMove)
         }
+        setBoard(newBoardState);
         if(!winner) {
           const move = enemyMove(enemyMoves,{row:Number(row),column:Number(column)});
           if(move) newBoardState[move.row][move.column] = 'Cross';
             setBoard(newBoardState);
         }
-        if(checkIsWin(newBoardState)) {
+        const whoWinAfterEnemyMove = checkIsWin(newBoardState);
+        if(whoWinAfterEnemyMove) {
           setWinner(checkIsWin(newBoardState)!.whoWin)
+          markWinnerCells(newBoardState,whoWinAfterEnemyMove)
         }
       }
     }

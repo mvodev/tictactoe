@@ -4,7 +4,6 @@ import { useTicTacToe } from './hooks/useTicTacToe';
 
 const Game = () => {
   const {board, startGame, isPlaying, stopGame,winner} = useTicTacToe();
-  console.log(winner)
   return (
     <>
       <h1 className={styles.header}>TicTacToe Game</h1>
@@ -12,7 +11,9 @@ const Game = () => {
         <>
         <Board currentBoard={board}/>
         {winner
-          ?<h5 className={styles.winnerHeader}>{winner==='Circle'?'Вы победили':'Вы проиграли'}</h5>
+          ?<h5 
+            className={styles.winnerHeader}>
+              {winner==='Circle'||winner==='CircleWin'?'Вы победили':'Вы проиграли'}</h5>
           :null
         }
         {winner && <button className={styles.buttonControl} onPointerDown={startGame}>Сыграть еще</button>}
